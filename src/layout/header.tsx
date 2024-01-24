@@ -1,52 +1,43 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { debounce } from "lodash";
-import Heading from "../components/heading";
-import Drawer from "../components/drawer";
-import Input from "../components/input";
-import { useSearchContext } from "../context/searchContext";
+import Search from "../components/search";
+import MobileNav from "./mobileNav";
+import { navIcons } from "../constants/navIcons";
+import { Button } from "@material-tailwind/react";
 
 const Header = () => {
-  const { searchInput, setSearchInput } = useSearchContext();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const debouncedSetSearchInput = debounce(() => {
-    if (location.pathname !== "/search") {
-      navigate("/search");
-    }
-  }, 1000);
-
-  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchInput(value);
-    debouncedSetSearchInput();
-  };
-
-  const handleNavigateHome = () => {
-    setSearchInput("");
-    navigate("/home");
-  };
-
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8 mx-4 sm:mx-8">
-        <div
-          className="w-[130px] text-[28px] cursor-pointer"
-          onClick={handleNavigateHome}
-        >
-          <Heading size={28} />
-        </div>
-        <div className="hidden sm:block">
-          <Input value={searchInput} onChange={handleInputChange} />
-        </div>
-        <div className="flex gap-2 items-center">
-          <div className="flex items-center gap-2">
-            <Drawer />
+    <div className={`px-4 sm:px-8 py-4 w-full bg-white z-50`}>
+      <div className="flex justify-between items-center">
+        <MobileNav />
+        <h1 className="text-primary font-inter text-[28px] font-semibold">
+          Overview
+        </h1>
+        <div className="flex gap-6">
+          <div className="hidden lg:block">
+            <Search />
+          </div>
+          <div className="hidden lg:flex gap-6">
+            {navIcons.map((item, index) => (
+              <Button
+                key={index}
+                placeholder={``}
+                color="white"
+                className="flex items-center py-2 px-3 rounded-full bg-background cursor-pointer"
+              >
+                {item.icon}
+              </Button>
+            ))}
+          </div>
+          <div>
+            <img
+              src="/assets/profile.svg"
+              alt=""
+              className="h-[50px] rounded-[50px] cursor-pointer"
+            />
           </div>
         </div>
       </div>
-      <div className="flex justify-center sm:hidden mb-6">
-        <Input value={searchInput} onChange={handleInputChange} />
+      <div className="mt-5 lg:hidden">
+        <Search />
       </div>
     </div>
   );

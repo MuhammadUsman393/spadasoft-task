@@ -1,37 +1,32 @@
 import Layout from "../layout/layout";
-import CurrentlyWatch from "../views/home/currentlyWatch";
-import PrevWatch from "../views/home/prevWatch";
-import { useMovieContext } from "../context/movieContext";
-import { Spinner } from "@material-tailwind/react";
-import { useState, useEffect } from "react";
+import Cards from "../views/home/cards";
+import ActivityBarChart from "../views/home/activityBarChart";
+import ExpensePolarArea from "../views/home/expensePolarArea";
+import Transfer from "../views/home/transfer";
+import BalanceLineChart from "../views/home/balanceLineChart";
 
 const Home = () => {
-  const { movies } = useMovieContext();
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (movies.length !== 0) {
-        setLoading(false);
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [movies]);
-
   return (
-    <div className="py-8 bg-background min-h-[100vh] flex justify-center">
+    <div className="flex justify-center items-center">
       <div className="w-full max-w-[1440px]">
         <Layout>
-          {!loading ? (
-            <div>
-              <CurrentlyWatch />
-              <PrevWatch />
+          <Cards />
+          <div className="flex flex-col md:flex-row px-4">
+            <div className="w-full md:w-[65%] mr-4 mb-8">
+              <ActivityBarChart />
             </div>
-          ) : (
-            <div className="flex justify-center mt-40">
-              <Spinner className="h-10 w-10" />
+            <div className="w-full md:w-[33%] mb-8">
+              <ExpensePolarArea />
             </div>
-          )}
+          </div>
+          <div className="flex flex-col md:flex-row px-4">
+            <div className="w-full md:w-[45%] mr-4 mb-8">
+              <Transfer />
+            </div>
+            <div className="w-full md:w-[52%] mb-8">
+              <BalanceLineChart />
+            </div>
+          </div>
         </Layout>
       </div>
     </div>

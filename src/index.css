@@ -1,3 +1,6 @@
+@import url('https://fonts.cdnfonts.com/css/mont');
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Lato&display=swap');
+                
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,9 +12,4 @@
 ::-webkit-scrollbar-horizontal {
     height: 0px;
     width: 0px;
-}
-
-@font-face {
-    font-family: 'Caros';
-    src: url('../public/fonts/cretype\ \ Caros\ Medium.otf');
 }

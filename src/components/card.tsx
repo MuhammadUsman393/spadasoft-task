@@ -1,125 +1,72 @@
-import { movieType } from "../types/movieType";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import type { RootState } from "../store/store";
-import { useSelector, useDispatch } from "react-redux";
-import { setLike, removeLike } from "../store/slices/likeSlice";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useSearchContext } from "../context/searchContext";
+import { cardItem } from "../types/cardItem";
+import BankCard from "../icons/bankCard";
 
-const Card = ({
-  movie,
-  index,
-  check,
-}: {
-  movie: movieType;
-  index: number;
-  check: boolean;
-}) => {
-  const { setSearchInput } = useSearchContext();
-  const dispatch = useDispatch();
-  const like = useSelector((state: RootState) => state.like.value);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const handleMouseEnter = (index: number) => {
-    setHoveredIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredIndex(null);
-  };
-
-  const isInLike = (id: number) => {
-    return like.includes(id);
-  };
-
-  const handleLike = (id: number) => {
-    if (isInLike(id)) {
-      toast.success("Removed from Like", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "colored",
-        progress: undefined,
-      });
-      dispatch(removeLike(id));
-    } else {
-      toast.success("Added to Like", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        theme: "colored",
-        progress: undefined,
-      });
-      dispatch(setLike(id));
-    }
-  };
-
+const card = ({ check, item }: { check: boolean; item: cardItem }) => {
   return (
     <div
-      key={movie.id}
-      onMouseEnter={() => handleMouseEnter(index)}
-      onMouseLeave={handleMouseLeave}
-      className={`focus:outline-none focus:border-none relative max-w-[180px] ${
-        check ? "pl-4" : "h-[245px] sm:h-[280px]"
+      className={`rounded-[20px] font-lato h-full hover:shadow-[7px_5px_4px_0px_#dcdcdc] ${
+        check
+          ? "bg-third text-white"
+          : "bg-white border border-gray2 text-primary"
       }`}
     >
-      {hoveredIndex === index && (
-        <div
-          className={`absolute inset-0 flex flex-col items-center justify-center bg-[#3A3A3A] bg-opacity-40 rounded-[20px] h-[245px] sm:h-[280px] ${
-            check ? "ml-4" : ""
-          }`}
-        >
-          <div
-            onClick={() => handleLike(movie.id)}
-            className="flex items-center cursor-pointer gap-1 mb-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill={isInLike(movie.id) ? "red" : "none"}
-            >
-              <path
-                d="M7.99973 14.0361C-5.33333 6.66669 3.99999 -1.33331 7.99973 3.72539C12 -1.33331 21.3333 6.66669 7.99973 14.0361Z"
-                stroke="white"
-                stroke-width="1.8"
-              />
-            </svg>
-            <p className="text-white font-semibold">
-              {isInLike(movie.id) ? "Unlike" : "Like"}
-            </p>
+      <div className="p-4 pb-7">
+        <div className="flex justify-between">
+          <div>
+            <h3 className={`text-[11px] ${!check ? "text-gray1" : ""}`}>
+              Balance
+            </h3>
+            <p className="font-semibold">{item.balance}</p>
           </div>
-          <Link
-            onClick={() => {
-              setSearchInput("");
-            }}
-            to={`/movie/${movie.id}`}
-            className="text-secondary bg-white hover:text-white hover:bg-secondary font-semibold w-full max-w-[120px] h-[40px] cursor-pointer flex items-center justify-center rounded-lg"
-          >
-            <p>View</p>
-          </Link>
+          <div>
+            {check ? (
+              <img
+                src="/assets/card1.svg"
+                alt=""
+                className="w-[29px] h-[29px]"
+              />
+            ) : (
+              <img
+                src="/assets/card2.svg"
+                alt=""
+                className="w-[29px] h-[29px]"
+              />
+            )}
+          </div>
         </div>
-      )}
-      <img
-        className={`object-cover w-full ${
-          hoveredIndex === index
-            ? "h-[245px] sm:h-[280px]"
-            : "h-[230px] sm:h-[263px]"
-        } rounded-[20px]`}
-        src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-        alt="movie poster"
-      />
+        <div className="flex justify-between mt-5">
+          <div>
+            <h3
+              className={`text-[10px] ${check ? "opacity-70" : "text-gray1"}`}
+            >
+              CARD HOLDER
+            </h3>
+            <p className="text-[13px] font-semibold">{item.cardHolder}</p>
+          </div>
+          <div>
+            <h3
+              className={`text-[10px] ${check ? "opacity-70" : "text-gray1"}`}
+            >
+              VALID THRU
+            </h3>
+            <p className="text-[13px] font-semibold">{item.valid}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        className={`p-4 ${
+          check ? "bg-white bg-opacity-10" : "border-t border-gray2"
+        }`}
+      >
+        <div className="flex justify-between items-center">
+          <p className="text-[15px]">{item.cardNumber}</p>
+          <div className={`${check ? "text-white" : "text-gray3"}`}>
+            <BankCard />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Card;
+export default card;

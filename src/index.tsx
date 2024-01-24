@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import store from "../src/store/store";
-import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@material-tailwind/react";
 import { ToastContainer } from "react-toastify";
@@ -14,23 +12,21 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider>
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-        <App />
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
